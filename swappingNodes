@@ -1,0 +1,23 @@
+//1721. Swapping nodes in linked list
+class Solution {
+public:
+    ListNode* swapNodes(ListNode* head, int k) {
+        ListNode* first = head;
+        ListNode* second = head;
+
+        for (int i = 1; i < k; i++) {
+            first = first->next;
+        }
+
+        ListNode* temp = first;
+
+        while (temp->next != NULL) {
+            second = second->next;
+            temp = temp->next;
+        }
+
+        swap(first->val, second->val);
+
+        return head;
+    }
+};
