@@ -1,0 +1,19 @@
+// 145. Binary Tree Postorder Traversal
+
+class Solution {
+public:
+    vector<int> postorderTraversal(TreeNode* root) {
+        vector<int> ans;
+        traverse(root, ans);
+        return ans;
+    }
+
+    void traverse(TreeNode* root, vector<int>& ans) {
+        if (root == NULL)
+            return;
+
+        traverse(root->left, ans);
+        traverse(root->right, ans);
+        ans.push_back(root->val);
+    }
+};
