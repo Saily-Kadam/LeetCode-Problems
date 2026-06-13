@@ -1,0 +1,81 @@
+// 417 Pacific Atlantic Water Flow
+class Solution {
+public:
+    vector<vector<int>> pacificAtlantic(vector<vector<int>>& heights) {
+        int rows = heights.size();
+        int cols = heights[0].size();
+
+        vector<vector<bool>> pacific(rows, vector<bool>(cols, false));
+        vector<vector<bool>> atlantic(rows, vector<bool>(cols, false));
+
+        queue<pair<int, int>> pacQ;
+        queue<pair<int, int>> atlQ;
+
+        // Pacific borders
+        for (int r = 0; r < rows; r++) {
+            pacQ.push({r, 0});
+            pacific[r][0] = true;
+        }
+
+        for (int c = 0; c < cols; c++) {
+            pacQ.push({0, c});
+            pacific[0][c] = true;
+        }
+
+        // Atlantic borders
+        for (int r = 0; r < rows; r++) {
+            atlQ.push({r, cols - 1});
+            atlantic[r][cols - 1] = true;
+        }
+
+        for (int c = 0; c < cols; c++) {
+            atlQ.push({rows - 1, c});
+            atlantic[rows - 1][c] = true;
+        }
+
+        bfs(heights, pacQ, pacific);
+        bfs(heights, atlQ, atlantic);
+
+        vector<vector<int>> ans;
+
+        for (int r = 0; r < rows; r++) {
+            for (int c = 0; c < cols; c++) {
+                if (pacific[r][c] && atlantic[r][c]) {
+                    ans.push_back({r, c});
+                }
+            }
+        }
+
+        return ans;
+    }
+
+    void bfs(vector<vector<int>>& heights,
+             queue<pair<int, int>>& q,
+             vector<vector<bool>>& visited) {
+
+        int rows = heights.size();
+        int cols = heights[0].size();
+
+        int dr[] = {-1, 1, 0, 0};
+        int dc[] = {0, 0, -1, 1};
+
+        while (!q.empty()) {
+            auto [r, c] = q.front();
+            q.pop();
+
+            for (int k = 0; k < 4; k++) {
+                int nr = r + dr[k];
+                int nc = c + dc[k];
+
+                if (nr >= 0 && nr < rows &&
+                    nc >= 0 && nc < cols &&
+                    !visited[nr][nc] &&
+                    heights[nr][nc] >= heights[r][c]) {
+
+                    visited[nr][nc] = true;
+                    q.push({nr, nc});
+                }
+            }
+        }
+    }
+};
