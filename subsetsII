@@ -1,0 +1,28 @@
+//90. Subsets II
+
+class Solution {
+public:
+    vector<vector<int>> subsetsWithDup(vector<int>& nums) {
+        vector<vector<int>> ans;
+        set<vector<int>> ansSet;
+        vector<int> curr;
+
+        backtrack(0, curr, nums, ansSet);
+        for (auto &e : ansSet)
+            ans.push_back(e);
+
+        return ans;
+    }
+    void backtrack(int idx,vector<int>& curr,vector<int>& nums,set<vector<int>>& ansSet) {
+        if (idx == nums.size()) {
+            vector<int> tmp = curr;
+            sort(tmp.begin(), tmp.end());
+            ansSet.insert(tmp);
+            return;
+        }
+        curr.push_back(nums[idx]);
+        backtrack(idx + 1, curr, nums, ansSet);
+        curr.pop_back();
+        backtrack(idx + 1, curr, nums, ansSet);
+    }
+};
