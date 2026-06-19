@@ -1,0 +1,43 @@
+// 767. Reorganize String
+
+class Solution {
+public:
+    string reorganizeString(string s) {
+        int freq[26] = {0};
+
+        for(char ch : s)
+            freq[ch - 'a']++;
+
+        int maxFreq = 0;
+        for(int i = 0; i < 26; i++)
+            maxFreq = max(maxFreq, freq[i]);
+
+        if(maxFreq > (s.size() + 1) / 2)
+            return "";
+
+        priority_queue<pair<int,char>> heap;
+
+        for(int i = 0; i < 26; i++) {
+            if(freq[i] > 0)
+                heap.push({freq[i], char('a' + i)});
+        }
+
+        string ans;
+        pair<int,char> prev = {0, '#'};
+
+        while(!heap.empty()) {
+            auto [cnt, ch] = heap.top();
+            heap.pop();
+
+            ans += ch;
+            cnt--;
+
+            if(prev.first > 0)
+                heap.push(prev);
+
+            prev = {cnt, ch};
+        }
+
+        return ans;
+    }
+};
