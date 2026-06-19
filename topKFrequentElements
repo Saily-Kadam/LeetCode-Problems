@@ -1,0 +1,27 @@
+//347. Top K Frequent Elements
+class Solution {
+public:
+    vector<int> topKFrequent(vector<int>& nums, int k) {
+        unordered_map<int, int> nt;
+
+        for (auto e : nums)
+            nt[e]++;
+
+        priority_queue<pair<int, int>> heap;
+
+        for (auto e : nt) {
+            heap.push({e.second, e.first});
+        }
+
+        vector<int> ans;
+
+        for (int i = 0; i < k; i++) {
+            auto [fq, num] = heap.top();
+            heap.pop();
+
+            ans.push_back(num);
+        }
+
+        return ans;
+    }
+};
