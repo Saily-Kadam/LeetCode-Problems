@@ -18,7 +18,7 @@ public:
             leftMax.push(rightMin.top());
             rightMin.pop();
         }
-    }
+    } 
 
     double findMedian() {
         if (leftMax.size() > rightMin.size()) {
