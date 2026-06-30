@@ -1,0 +1,39 @@
+//207. Course Schedule
+
+class Solution {
+public:
+    bool isCyclePresentFor(int idx,vector<vector<int>>& AList,vector<int>& visited) {
+        if (visited[idx] == 1)
+            return true;
+
+        if (visited[idx] == 2)
+            return false;
+
+        visited[idx] = 1;
+
+        for (auto e : AList[idx]) {
+            if (isCyclePresentFor(e, AList, visited))
+                return true;
+        }
+
+        visited[idx] = 2;
+        return false;
+    }
+
+    bool canFinish(int numCourses, vector<vector<int>>& prerequisites) {
+
+        vector<vector<int>> AList(numCourses);
+        vector<int> visited(numCourses, 0);
+
+        for (auto p : prerequisites) {
+            AList[p[0]].push_back(p[1]);
+        }
+
+        for (int i = 0; i < numCourses; i++) {
+            if (isCyclePresentFor(i, AList, visited))
+                return false;
+        }
+
+        return true;
+    }
+};
